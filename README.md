@@ -106,3 +106,22 @@ create a variable.tf to store variables and call to main.tf
 ```
 ![terra diagram](https://user-images.githubusercontent.com/115226294/202477849-833606fd-f8e3-4357-9adb-f7163c7da741.png)
 
+- So first we install terraform on our local machine using steps above
+- After installing we need to create some environment variables so terraform can read our work
+    - here we give terraform access to our AWS console by providing our access and secret keys
+- Once set up we create a file called `main.tf` - here is where we add our scripts
+- We need to initialise this code file to run our instructions
+    - to do this we use terraform commands:
+    - terraform plan - plans our code
+    - terraform apply v - runs the code and checks syntax, when all correct it launches the machine
+    - terraform destroy - destroys the machine
+- These instructions go to any cloud provider - AWS, Azure, GCP
+- Inside our scripts we need to specifiacally describe exactly how we want our instance to be set up
+    - regions
+    - type of instance 
+    - security keys
+    - VPC
+    - security groups
+    - Route tables
+    - Internet gateways
+    - Subnets etc
