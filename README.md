@@ -1,5 +1,3 @@
-What is Terraform, benefits - use cases - who is using it - who owns it
-
 ## What is Terraform
 - Terraform is an open-source infrastructure as code software tool.
 - It is a tool for building, changing and versioning infrastructure safely and efficiently.
@@ -28,6 +26,7 @@ There are a few key reasons developers choose to use Terraform over other Infras
 ## Terraform state
 - Terraform stores information about your infrastructure in a state file. This state file keeps track of resources created by your configuration and maps them to real-world resources.
 
+## Terraform stages
 - Write -> You define resources, which may be across multiple cloud providers and services.
 - Plan -> Terraform creates an execution plan describing the infrastructe it will create, update, or destroy based on the existing infrastructure and your configuration.
 - Apply -> On approval, Terraform performs the proposed operations in the correct order, respecting any resource dependencies.
