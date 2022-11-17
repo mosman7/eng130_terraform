@@ -1,50 +1,106 @@
-# write a script to launch resources on cloud
-# create ec2 instance on aws
-# syntax {
-#	  ami = djhwjusdh}
-# download dependencies from aws
-# 
-    provider "aws" {
+# write a script to launch resources on the cloud
 
-# which part of aws we would like to launch resources in - ireland?
-	region = "eu-west-1"
-    }
-    # # create vpc
-    resource "aws_vpc" "osman-vpc"{
-        cidr_block = "10.0.9.0/24"
+# create ec2 instance on AWS
 
-        tags = {
-          "Name" = "Osman-vpc"
-        }
-    }
+# download dependencies from AWS
 
-    # public subnet
-    resource "aws_subnet" "eng130_osman_public_subnet" {
-        vpc_id     = aws_vpc.
-        cidr_block = "10.0.9.0/24"
-        map_public_ip_on_launch = true
-        availability_zone = "eu-west-1a"
+provider "aws" {
 
-        tags = {
-            Name = "eng130_osman_subnet_public"
-        }
-    }
-    # create internet gateway
-    resource "aws_internet_gateway" "osman-ig"{
+  # which part of AWS we would like to launch resouces in
+  region = "eu-west-1"
+}
+# create a vpc
+resource "aws_vpc" "main-vpc" {
+  cidr_block       = var.vpc_cidr
+  instance_tenancy = "default"
 
-    }
+  tags = {
+    Name = "eng130_osman_vpc"
+  }
+}
+# create internet gateway
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.main-vpc.id
 
-    # route table
+}
+
+# create route table
+resource "aws_route_table" "main-route-table" {
+  vpc_id = aws_vpc.main-vpc.id
+  route {
+    cidr_block = var.route-table
+    gateway_id = aws_internet_gateway.gw.id
+  }
+
+  route {
+    ipv6_cidr_block        = "::/0"
+    gateway_id = aws_internet_gateway.gw.id
+  }
+}
+
+# create subnet
+resource "aws_subnet" "subnet-1" {
+  vpc_id     = aws_vpc.main-vpc.id
+  cidr_block = var.subnet_cidr
+  availability_zone = "eu-west-1a"
+
+  tags = {
+    Name = "eng130_osman_subnet"
+  }
+}
+# attach route table to subnet
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.subnet-1.id
+  route_table_id = aws_route_table.main-route-table.id
+}
+
+# create security groups
+resource "aws_security_group" "eng130-osman-terraform-sg" {
+  name        = "osman-terraform-sg"
+  description = "osman-terraform-sg"
+  vpc_id      = aws_vpc.main-vpc.id
+
+  ingress {
+    description      = "HTTP"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+   
+  }
+
+ingress {
+    description      = "SSH"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+   
+  }
 
 
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 
+  tags = {
+    Name = "eng130_osman_sg"
+  }
+}
 
-    resource "aws_instance"  "app_instance" {
-     ami = var.ami_id
-     instance_type = "t2.micro"
-     associate_public_ip_address = true
-     key_name = var.key_name
-     tags = {
-         Name = "eng130-osman-terraform-appv2"
-     }
-    }
+resource "aws_instance" "app_instance" {
+  ami                         = var.ami_id
+  key_name 					  = var.key_name
+  instance_type               = var.instance_type
+  associate_public_ip_address = true
+  subnet_id =  aws_subnet.subnet-1.id
+  vpc_security_group_ids = [aws_security_group.eng130-osman-terraform-sg.id]
+  tags = {
+    Name = "eng130-osman-terraform-app"
+  }
+  
+}
