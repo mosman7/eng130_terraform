@@ -20,7 +20,7 @@
 
     # public subnet
     resource "aws_subnet" "eng130_osman_public_subnet" {
-        vpc_id     = aws_vpc.eng89_brittany_vpc_terra.id
+        vpc_id     = aws_vpc.
         cidr_block = "10.0.9.0/24"
         map_public_ip_on_launch = true
         availability_zone = "eu-west-1a"
