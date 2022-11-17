@@ -30,6 +30,7 @@ There are a few key reasons developers choose to use Terraform over other Infras
 - Write -> You define resources, which may be across multiple cloud providers and services.
 - Plan -> Terraform creates an execution plan describing the infrastructe it will create, update, or destroy based on the existing infrastructure and your configuration.
 - Apply -> On approval, Terraform performs the proposed operations in the correct order, respecting any resource dependencies.
+![terraform](https://user-images.githubusercontent.com/115226294/202477572-d7d8d1b6-d73d-43c0-a097-a2ffc6f7d13f.png)
 
 ## How to install Terraform
 2. Open powershell in admin mode and install chocolatey.
