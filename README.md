@@ -25,27 +25,12 @@ There are a few key reasons developers choose to use Terraform over other Infras
 
 ## Who owns it
 - Hashicorp
-
 ## Terraform state
+- Terraform stores information about your infrastructure in a state file. This state file keeps track of resources created by your configuration and maps them to real-world resources.
 
-install terraform on local host
-install env var
-files end in .tf
-add code in main.tf
-
-terraform init - initialise terraform and download dependencies required
-
-terraform plan - write configurations
-terraform apply - run it
-terraform destroy - destroys
-
-these files go :
-hybrid cloud iac with terraform - aws, azure, gcp
-- where in aws do you want to launch etc..
-- need access and secret keys
-    - create a env var called AWS_ACCESS_KEY and secret key
-    - create env var in localhost
-
+- Write -> You define resources, which may be across multiple cloud providers and services.
+- Plan -> Terraform creates an execution plan describing the infrastructe it will create, update, or destroy based on the existing infrastructure and your configuration.
+- Apply -> On approval, Terraform performs the proposed operations in the correct order, respecting any resource dependencies.
 
 ## How to install Terraform
 2. Open powershell in admin mode and install chocolatey.
@@ -97,14 +82,25 @@ Global options (use these before the subcommand, if any):
   -version      An alias for the "version" subcommand.
   ```
 
-  # write a script to launch resources on cloud
-  # create ec2 instance on aws
-  # download dependencies from aws
-  # which part of aws we would like to launch resources in - ireland?
-  # what type of servcer what functionality
+```
+install terraform on local host
+install env var
+files end in .tf
+add code in main.tf
 
-  # add resource
-  # ami
-  # instance type
-  # public ip or no?
-  # name the server
+terraform init - initialise terraform and download dependencies required
+
+terraform plan - write configurations
+terraform apply - run it
+terraform destroy - destroys
+
+these files go :
+hybrid cloud iac with terraform - aws, azure, gcp
+- where in aws do you want to launch etc..
+- need access and secret keys
+    - create a env var called AWS_ACCESS_KEY and secret key
+    - create env var in localhost
+
+create a variable.tf to store variables and call to main.tf
+
+```
