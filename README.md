@@ -104,3 +104,5 @@ hybrid cloud iac with terraform - aws, azure, gcp
 create a variable.tf to store variables and call to main.tf
 
 ```
+![terra diagram](https://user-images.githubusercontent.com/115226294/202477849-833606fd-f8e3-4357-9adb-f7163c7da741.png)
+
