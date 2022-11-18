@@ -164,8 +164,8 @@ add tag
 1. From your local host using terraform create main.tf file to launch the EC2 instances(3 instances) in AWS.
   - Create another file variable.tf for storing varibles
 - Install ansible in one of the EC2 instance which acts as ansible controller
-From the controller install the node app in web EC2 instance using node.yml file
-From the controller install the mongodb in mongodb EC2 instance using mongo.yml file
+- From the controller install node app in web EC2 instance using node.yml file
+- From the controller install mongodb in mongodb EC2 instance using mongo.yml file
 
 #### IAC for configuration management and orchestration
 ##### terraraform first provisions the infrastructure then ansible installs and updates software

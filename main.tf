@@ -105,22 +105,22 @@ ingress {
   }
 }
 
-# resource "aws_instance" "app_instance" {
-#   ami                         = var.ami_id
-#   key_name 					  = "eng130-new"
-#   instance_type               = var.instance_type
-#   associate_public_ip_address = true
-#   subnet_id =  aws_subnet.subnet-1.id
-#   vpc_security_group_ids = [aws_security_group.eng130-osman-terraform-sg.id]
-#   tags = {
-#     Name = "eng130-osman-terraform-app"
-#   }
+resource "aws_instance" "eng130-osman-controller" {
+  ami                         = var.ami_id
+  key_name 					  = "eng130-new"
+  instance_type               = var.instance_type
+  associate_public_ip_address = true
+  subnet_id =  aws_subnet.subnet-1.id
+  vpc_security_group_ids = [aws_security_group.eng130-osman-terraform-sg.id]
+  tags = {
+    Name = "eng130-osman-controller"
+  }
   
-# }
+}
 
 resource "aws_launch_template" "app-lt" {
   name   = "eng130-osman-terraform-launch-template"
-  key_name 					  = "eng130-new"
+  key_name 	  = "eng130-new"
   image_id      = var.ami_id  #aws_instance.app_instance.ami
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.eng130-osman-terraform-sg.id]
@@ -128,7 +128,7 @@ resource "aws_launch_template" "app-lt" {
   tags = {
     Name = "eng130-osman-terraform-lt"
   }
-  }
+}
 
 
 resource "aws_autoscaling_group" "app-asg" {
@@ -140,8 +140,8 @@ resource "aws_autoscaling_group" "app-asg" {
 
   tag {
     key                 = "Name"
-    propagate_at_launch = false
-    value               = "eng130-osman-t-app"
+    propagate_at_launch = true
+    value               = "eng130-osman-app"
   }
   launch_template {
     id      = aws_launch_template.app-lt.id
