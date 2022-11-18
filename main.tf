@@ -15,7 +15,7 @@ resource "aws_vpc" "main-vpc" {
   instance_tenancy = "default"
 
   tags = {
-    Name = "eng130_osman_vpc"
+    Name = "eng130-osman-terraform-vpc"
   }
 }
 # create internet gateway
@@ -40,18 +40,28 @@ resource "aws_route_table" "main-route-table" {
   }
 }
 
-# create subnet
+# create subnets
 resource "aws_subnet" "subnet-1" {
   vpc_id     = aws_vpc.main-vpc.id
-  cidr_block = var.subnet_cidr
+  cidr_block = var.subnet_1
   availability_zone = "eu-west-1a"
 
   tags = {
-    Name = "eng130_osman_subnet"
+    Name = "eng130-osman-terraform-subnet1"
+  }
+}
+
+resource "aws_subnet" "subnet-2" {
+  vpc_id     = aws_vpc.main-vpc.id
+  cidr_block = var.subnet_2
+  availability_zone = "eu-west-1b"
+
+  tags = {
+    Name = "eng130-osman-terraform-subnet2"
   }
 }
 # attach route table to subnet
-resource "aws_route_table_association" "a" {
+resource "aws_route_table_association" "rta" {
   subnet_id      = aws_subnet.subnet-1.id
   route_table_id = aws_route_table.main-route-table.id
 
@@ -95,15 +105,60 @@ ingress {
   }
 }
 
-resource "aws_instance" "app_instance" {
-  ami                         = var.ami_id
-  key_name 					  = "eng130-new"
-  instance_type               = var.instance_type
-  associate_public_ip_address = true
-  subnet_id =  aws_subnet.subnet-1.id
-  vpc_security_group_ids = [aws_security_group.eng130-osman-terraform-sg.id]
-  tags = {
-    Name = "eng130-osman-terraform-app"
-  }
+# resource "aws_instance" "app_instance" {
+#   ami                         = var.ami_id
+#   key_name 					  = "eng130-new"
+#   instance_type               = var.instance_type
+#   associate_public_ip_address = true
+#   subnet_id =  aws_subnet.subnet-1.id
+#   vpc_security_group_ids = [aws_security_group.eng130-osman-terraform-sg.id]
+#   tags = {
+#     Name = "eng130-osman-terraform-app"
+#   }
   
+# }
+
+resource "aws_launch_template" "app-lt" {
+  name   = "eng130-osman-terraform-launch-template"
+  key_name 					  = "eng130-new"
+  image_id      = var.ami_id  #aws_instance.app_instance.ami
+  instance_type = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.eng130-osman-terraform-sg.id]
+
+  tags = {
+    Name = "eng130-osman-terraform-lt"
+  }
+  }
+
+
+resource "aws_autoscaling_group" "app-asg" {
+  name = "eng130-osman-terraform-asg"
+  desired_capacity   = 2
+  max_size           = 3
+  min_size           = 1
+  vpc_zone_identifier = [aws_subnet.subnet-1.id]
+
+  tag {
+    key                 = "Name"
+    propagate_at_launch = false
+    value               = "eng130-osman-t-app"
+  }
+  launch_template {
+    id      = aws_launch_template.app-lt.id
+    version = "$Latest"
+  }
+}
+resource "aws_lb" "app-lb" {
+  name = "eng130-osman-terraform-app-lb"
+  internal = false
+  load_balancer_type = "application"
+  security_groups = [aws_security_group.eng130-osman-terraform-sg.id]
+  subnets = [
+    aws_subnet.subnet-1.id,
+    aws_subnet.subnet-2.id
+  ]
+
+  tags = {
+    Name = "eng130-osman-terraform-lb"
+  }
 }

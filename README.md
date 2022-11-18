@@ -160,3 +160,23 @@ add tag
 ```
 ![untitledterr](https://user-images.githubusercontent.com/115226294/202727243-df40a638-89ff-44d1-983f-99ed170d9a12.png)
 
+### Steps
+1. From your local host using terraform create main.tf file to launch the EC2 instances(3 instances) in AWS.
+  - Create another file variable.tf for storing varibles
+- Install ansible in one of the EC2 instance which acts as ansible controller
+From the controller install the node app in web EC2 instance using node.yml file
+From the controller install the mongodb in mongodb EC2 instance using mongo.yml file
+
+#### IAC for configuration management and orchestration
+##### terraraform first provisions the infrastructure then ansible installs and updates software
+provisioning in main.tf - configures the infrastructure
+terraform deploys to cloud providers
+launch vpc in terraform first
+
+go to ansible controller
+tell controller to find your ec2 from terra and run your pplaybooks - install nginx, node, mongo etc
+create a playbook to link all playbooks together
+
+why do we use playbooks
+- provision multiple instances - change hosts to all
+- provision.sh only provisions 1 at a time
