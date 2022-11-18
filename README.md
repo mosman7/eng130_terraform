@@ -35,7 +35,7 @@ There are a few key reasons developers choose to use Terraform over other Infras
 - `terraform destroy` - Destroy previously-created infrastructure on Cloud
 
 ## How to install Terraform
-2. Open powershell in admin mode and install chocolatey.
+1. Open powershell in admin mode and install chocolatey.
 - `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
 2. Once that installation is complete, check chocolatey is install by running `choco` and if everything works you should see choco version `choco --version`
 3. Once that is done, run `choco install terraform` and if everything is installed correctly, you should be able to see terraform version `terraform --version`.
@@ -83,29 +83,6 @@ Global options (use these before the subcommand, if any):
   -help         Show this help output, or the help for a specified subcommand.
   -version      An alias for the "version" subcommand.
   ```
-
-```
-install terraform on local host
-install env var
-files end in .tf
-add code in main.tf
-
-terraform init - initialise terraform and download dependencies required
-
-terraform plan - write configurations
-terraform apply - run it
-terraform destroy - destroys
-
-these files go :
-hybrid cloud iac with terraform - aws, azure, gcp
-- where in aws do you want to launch etc..
-- need access and secret keys
-    - create a env var called AWS_ACCESS_KEY and secret key
-    - create env var in localhost
-
-create a variable.tf to store variables and call to main.tf
-
-```
 ![terra diagram](https://user-images.githubusercontent.com/115226294/202477849-833606fd-f8e3-4357-9adb-f7163c7da741.png)
 
 - So first we install terraform on our local machine using steps above
@@ -127,3 +104,57 @@ create a variable.tf to store variables and call to main.tf
     - Route tables
     - Internet gateways
     - Subnets etc
+```
+chmod 400 eng130-new.pub
+
+terraform plan
+terraform apply
+ go to ssh folder
+ ssh in
+
+provider 
+specify aws and region
+
+create vpc
+add tag
+
+create ig
+attach to vpc using resource name - ids are in tfstate file
+add tag
+
+subnet
+specify vpc id
+add cidr block - subnet one
+add the availability zone - 1a
+map public ip on launch - gives it a name
+add tag
+
+sg
+ingress
+http
+ssh
+
+egress 
+everyone
+tags
+
+rt
+vpc id
+route
+  cidr block
+  ig
+
+rt association
+subnet id
+route table
+
+create instance
+ami
+type
+subnet id
+sg id
+public ip true
+key name
+add tag
+
+```
