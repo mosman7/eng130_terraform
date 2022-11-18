@@ -20,17 +20,19 @@ There are a few key reasons developers choose to use Terraform over other Infras
 ## Who uses it
 - Used by DevOps engineers - to automate infrastructure tasks
 - Uber, Udemy
-
 ## Who owns it
 - Hashicorp
 ## Terraform state
 - Terraform stores information about your infrastructure in a state file. This state file keeps track of resources created by your configuration and maps them to real-world resources.
-
 ## Terraform stages
 - Write -> You define resources, which may be across multiple cloud providers and services.
-- Plan -> Terraform creates an execution plan describing the infrastructe it will create, update, or destroy based on the existing infrastructure and your configuration.
-- Apply -> On approval, Terraform performs the proposed operations in the correct order, respecting any resource dependencies.
+- Plan -> Terraform creates an execution plan describing the infrastructe it will create, update, or destroy based on the existing infrastructure and your configuration. `terraform plan`
+- Apply -> On approval, Terraform performs the proposed operations in the correct order, respecting any resource dependencies. `terraform apply`
 ![terraform](https://user-images.githubusercontent.com/115226294/202477572-d7d8d1b6-d73d-43c0-a097-a2ffc6f7d13f.png)
+#### Other useful terraform commands
+- `terraform init` - Prepare your working directory for other commands
+- `terraform validate` - Check whether the configuration is valid
+- `terraform destroy` - Destroy previously-created infrastructure on Cloud
 
 ## How to install Terraform
 2. Open powershell in admin mode and install chocolatey.

@@ -18,11 +18,6 @@ resource "aws_vpc" "main-vpc" {
     Name = "eng130_osman_vpc"
   }
 }
-# create internet gateway
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main-vpc.id
-
-}
 
 # create route table
 resource "aws_route_table" "main-route-table" {
@@ -37,6 +32,13 @@ resource "aws_route_table" "main-route-table" {
     gateway_id = aws_internet_gateway.gw.id
   }
 }
+# create internet gateway
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.main-vpc.id
+
+}
+
+
 
 # create subnet
 resource "aws_subnet" "subnet-1" {
